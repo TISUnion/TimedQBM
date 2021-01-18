@@ -11,9 +11,9 @@ Timed QuickBackupM
 
 ## 需求
 
-- MCDR >=1.2.0
+- [MCDR](https://github.com/Fallen-Breath/MCDReforged) >=1.2.0
 
-- QuickBackupM >=1.1.0
+- [QuickBackupM](https://github.com/TISUnion/QuickBackupM) >=1.1.0
 
 ## 配置
 
