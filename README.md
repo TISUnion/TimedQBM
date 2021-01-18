@@ -9,6 +9,12 @@ Timed QuickBackupM
 
 可配合 QBM 插件配置文件的 `delete_protection` 数值来避免 TQBM 覆盖过多备份
 
+## 需求
+
+- MCDR >=1.2.0
+
+- QuickBackupM >=1.1.0
+
 ## 配置
 
 配置文件为 `config/timed_quick_backup_multi.json`
