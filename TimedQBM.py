@@ -31,7 +31,7 @@ HELP_MESSAGE = '''
 §7{0} reset_timer§r 重置备份定时器
 '''.strip().format(PREFIX, PLUGIN_METADATA['name'], PLUGIN_METADATA['version'], PLUGIN_METADATA['description'])
 
-TRIGGER_BACKUP_EVENT 	= LiteralEvent('{}.trigger_backup'.format(QBM_PID))  # <- source, slot_info
+TRIGGER_BACKUP_EVENT 	= LiteralEvent('{}.trigger_backup'.format(QBM_PID))  # <- source, comment
 BACKUP_DONE_EVENT 		= LiteralEvent('{}.backup_done'.format(QBM_PID))  # -> source, slot_info
 
 config = {
