@@ -31,7 +31,7 @@ def set_enabled(source: CommandSource, value: bool):
 	config.enabled = value
 	clock.set_enabled(value)
 	save_config()
-	source.reply('定时器已{}'.format('启动' if value else '关闭'))
+	source.reply(TimedQBM.tr('set_enabled.timer', TimedQBM.tr('set_enabled.start') if value else TimedQBM.tr('set_enabled.stop')))
 	if value:
 		clock.broadcast_next_backup_time()
 
@@ -39,38 +39,25 @@ def set_enabled(source: CommandSource, value: bool):
 def set_interval(source: CommandSource, interval: float):
 	config.interval = interval
 	save_config()
-	source.reply('定时器触发间隔已设置为§6{}§r分钟'.format(interval))
+	source.reply(TimedQBM.tr('set_interval', interval))
 	clock.broadcast_next_backup_time()
 
 
 def reset_timer(source: CommandSource):
 	clock.reset_timer()
-	source.reply('定时器已重置')
+	source.reply(TimedQBM.tr('reset_timer'))
 	clock.broadcast_next_backup_time()
 
 
 def register_things(server: PluginServerInterface):
-	HELP_MESSAGE = '''
-	-------- {name} v{version} -------
-	{description}
-	§7{prefix}§r 显示此条帮助信息
-	§7{prefix} enable§r 启动备份定时器
-	§7{prefix} disable§r 关闭备份定时器
-	§7{prefix} set_interval §6<minutes>§r 设置备份定时器时间间隔，单位分钟
-	§7{prefix} reset_timer§r 重置备份定时器
-	'''.strip().format(
-		prefix=constants.PREFIX,
-		name=stored.metadata.name,
-		version=stored.metadata.version,
-		description=stored.metadata.get_description(server.get_mcdr_language())
-	)
+	HELP_MESSAGE = TimedQBM.tr('help_message', constants.PREFIX, stored.metadata.name, stored.metadata.version, stored.metadata.get_description(server.get_mcdr_language()))
 	server.register_event_listener(constants.BACKUP_DONE_EVENT, lambda svr, src, slot_info: clock.on_backup_created(slot_info))
-	server.register_help_message(constants.PREFIX, '定时备份插件，基于QuickBackupM', permission=config.permission_requirement)
+	server.register_help_message(constants.PREFIX, TimedQBM.tr('info'), permission=config.permission_requirement)
 	server.register_command(
 		Literal(constants.PREFIX).
 		requires(lambda src: src.has_permission(config.permission_requirement)).
-		on_error(RequirementNotMet, lambda src: src.reply(RText('权限不足！', color=RColor.red)), handled=True).
-		on_error(UnknownArgument, lambda src: src.reply(RText('未知指令，输入{}以查看帮助'.format(constants.PREFIX)))).
+		on_error(RequirementNotMet, lambda src: src.reply(RText(TimedQBM.tr('no_permission'), color=RColor.red)), handled=True).
+		on_error(UnknownArgument, lambda src: src.reply(RText(TimedQBM.tr('unknown_command', constants.PREFIX)))).
 		runs(lambda src: (src.reply(HELP_MESSAGE), src.reply(clock.get_next_backup_message()))).
 		then(Literal('enable').runs(lambda src: set_enabled(src, True))).
 		then(Literal('disable').runs(lambda src: set_enabled(src, False))).
@@ -104,10 +91,10 @@ def on_load(server: PluginServerInterface, prev):
 
 
 def on_unload(server):
-	server.logger.info('插件卸载，停止时钟')
+	server.logger.info(TimedQBM.tr('on_unload'))
 	clock.stop()
 
 
 def on_remove(server):
-	server.logger.info('插件被移除，停止时钟')
+	server.logger.info(TimedQBM.tr('on_remove'))
 	clock.stop()

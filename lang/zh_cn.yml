@@ -1,0 +1,28 @@
+timed_quick_backup_multi:
+  help_message: |
+    -------- {1} v{2} -------
+    {3}
+    §7{0}§r 显示此条帮助信息
+    §7{0} enable§r 启动备份定时器
+    §7{0} disable§r 关闭备份定时器
+    §7{0} set_interval §6<minutes>§r 设置备份定时器时间间隔，单位分钟
+    §7{0} reset_timer§r 重置备份定时器
+
+  info: 定时备份插件，基于QuickBackupM
+  no_permission: 权限不足！
+  unknown_command: "未知指令，输入{0}以查看帮助"
+  set_interval: "定时器触发间隔已设置为§6{0}§r分钟"
+  reset_timer: 定时器已重置
+  on_unload: 插件卸载，停止时钟
+  on_remove: 插件被移除，停止时钟
+  get_next_backup_message: "下次自动备份时间: §3{0}§r"
+  on_backup_created: 检测到新增的备份，重置定时器
+
+  set_enabled:
+    timer: "定时器已{0}"
+    start: 启动
+    stop: 关闭
+
+  run:
+    trigger_time: "每§6{0}§r分钟一次的定时备份触发"
+    timed_backup: "{0} 定时备份"
