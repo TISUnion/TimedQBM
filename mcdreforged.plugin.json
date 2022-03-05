@@ -13,6 +13,7 @@
 	},
 	"entrypoint": "timed_quick_backup_multi.entry",
 	"resources": [
+		"lang",
 		"LICENSE"
 	]
 }

@@ -1,6 +1,8 @@
 Timed QuickBackupM
 -------
 
+[English](https://github.com/TISUnion/TimedQBM/blob/master/README_en.md) | 中文
+
 一个 [QuickBackupM](https://github.com/TISUnion/QuickBackupM) 插件的扩展，用于定时触发 QBM 从而进行自动备份
 
 备份定时器会在 QBM 备份结束、定时器被手动启动/关闭/重置时，重置上次备份时间为当前时间

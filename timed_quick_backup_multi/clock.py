@@ -25,6 +25,10 @@ class TimedQBM(Thread):
 	def get_backup_interval(cls):
 		return cls.__get_interval() * 60
 
+	@staticmethod
+	def tr(translation_key: str, *args) -> RTextMCDRTranslation:
+		return ServerInterface.get_instance().rtr('timed_quick_backup_multi.{}'.format(translation_key), *args)
+
 	def broadcast(self, message):
 		rtext = RTextList('[{}] '.format(stored.metadata.name), message)
 		if self.server.is_server_startup():
@@ -40,13 +44,13 @@ class TimedQBM(Thread):
 		self.time_since_backup = time.time()
 
 	def get_next_backup_message(self):
-		return '下次自动备份时间: §3{}§r'.format(time.strftime("%Y/%m/%d %H:%M:%S", time.localtime(self.time_since_backup + self.get_backup_interval())))
+		return self.tr('get_next_backup_message', time.strftime("%Y/%m/%d %H:%M:%S", time.localtime(self.time_since_backup + self.get_backup_interval())))
 
 	def broadcast_next_backup_time(self):
 		self.broadcast(self.get_next_backup_message())
 
 	def on_backup_created(self, slot_info: dict):
-		self.broadcast('检测到新增的备份，重置定时器')
+		self.broadcast(self.tr('on_backup_created'))
 		self.reset_timer()
 		self.broadcast_next_backup_time()
 
@@ -58,8 +62,8 @@ class TimedQBM(Thread):
 				if time.time() - self.time_since_backup > self.get_backup_interval():
 					break
 			if self.is_enabled and self.server.is_server_startup():
-				self.broadcast('每§6{}§r分钟一次的定时备份触发'.format(self.__get_interval()))
-				self.server.dispatch_event(constants.TRIGGER_BACKUP_EVENT, (self.server.get_plugin_command_source(), '{} 定时备份'.format(stored.metadata.name)), on_executor_thread=False)
+				self.broadcast(self.tr('run.trigger_time', self.__get_interval()))
+				self.server.dispatch_event(constants.TRIGGER_BACKUP_EVENT, (self.server.get_plugin_command_source(), str(self.tr('run.timed_backup', stored.metadata.name))), on_executor_thread=False)
 
 	def stop(self):
 		self.stop_event.set()
