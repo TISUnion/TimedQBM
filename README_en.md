@@ -13,7 +13,7 @@ Can be used with the `delete_protection` value in the QBM plugin configuration f
 
 ## Requirements
 
-- [MCDR](https://github.com/Fallen-Breath/MCDReforged) >=1.2.0
+- [MCDR](https://github.com/Fallen-Breath/MCDReforged) >=2.0.0
 
 - [QuickBackupM](https://github.com/TISUnion/QuickBackupM) >=1.1.0
 
