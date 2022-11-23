@@ -11,11 +11,13 @@ class Config(Serializable):
 	enabled: bool = True
 	interval: float = 30.0  # minutes
 	permission_requirement: int = 2
+	require_online_players: bool = False
 
 
 config: Config
 CONFIG_FILE = os.path.join('config', 'timed_quick_backup_multi.json')
 clock = None  # type: Optional[TimedQBM]
+playercount = 0
 
 
 def save_config():
@@ -84,10 +86,30 @@ def on_load(server: PluginServerInterface, prev):
 	except (AttributeError, ValueError):
 		pass
 
-	clock.set_enabled(config.enabled)
+	#disable backup if online player is required until someone joins the server
+	if config.require_online_players:
+		clock.set_enabled(False)
+	else:
+		clock.set_enabled(config.enabled)
 	clock.start()
 
 	register_things(server)
+
+
+def on_player_joined(server: PluginServerInterface, player: str, info: Info):
+	global playercount, config, clock
+	if playercount == 0:
+		playercount += 1
+		clock.set_enabled(config.enabled)
+	else:
+		playercount += 1
+
+
+def on_player_left(server: PluginServerInterface, player: str, info: Info):
+	global playercount, config, clock
+	playercount -= 1
+	if playercount == 0:
+		clock.set_enabled(False)
 
 
 def on_unload(server):
