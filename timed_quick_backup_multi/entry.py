@@ -79,14 +79,18 @@ def on_load(server: PluginServerInterface, prev):
 	stored.metadata = server.get_self_metadata()
 	config = server.load_config_simple(CONFIG_FILE, target_class=Config, in_data_folder=False)
 
-	global clock
+	global clock, playercount
 	clock = TimedQBM(server)
 	try:
 		clock.time_since_backup = float(prev.clock.time_since_backup)
+		playercount = prev.playercount
 	except (AttributeError, ValueError):
 		pass
 
-	clock.set_enabled(config.enabled)
+	if (playercount != None) and (playercount > 0):
+		clock.set_enabled(config.enabled)
+	else:
+		clock.set_enabled(False)
 	clock.start()
 
 	register_things(server)
@@ -103,19 +107,25 @@ def on_server_start(server: PluginServerInterface):
 
 
 def on_player_joined(server: PluginServerInterface, player: str, info: Info):
-	global playercount, config, clock
-	if playercount == 0:
-		playercount += 1
-		clock.set_enabled(config.enabled)
-	else:
-		playercount += 1
+	global config
+
+	if config.require_online_players:
+		global playercount, clock
+		if playercount == 0:
+			playercount += 1
+			clock.set_enabled(config.enabled)
+		else:
+			playercount += 1
 
 
 def on_player_left(server: PluginServerInterface, player: str, info: Info):
-	global playercount, config, clock
-	playercount -= 1
-	if playercount == 0:
-		clock.set_enabled(False)
+	global config
+
+	if config.require_online_players:
+		global playercount, clock
+		playercount -= 1
+		if playercount == 0:
+			clock.set_enabled(False)
 
 
 def on_unload(server):
