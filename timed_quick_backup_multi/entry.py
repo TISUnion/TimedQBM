@@ -86,14 +86,20 @@ def on_load(server: PluginServerInterface, prev):
 	except (AttributeError, ValueError):
 		pass
 
+	clock.set_enabled(config.enabled)
+	clock.start()
+
+	register_things(server)
+
+
+def on_server_start(server: PluginServerInterface):
 	#disable backup if online player is required until someone joins the server
+	#putting logic here to avoid unintended behavior from reload/load plugin after server started
+	global config, clock
 	if config.require_online_players:
 		clock.set_enabled(False)
 	else:
 		clock.set_enabled(config.enabled)
-	clock.start()
-
-	register_things(server)
 
 
 def on_player_joined(server: PluginServerInterface, player: str, info: Info):
