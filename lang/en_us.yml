@@ -12,11 +12,11 @@ timed_quick_backup_multi:
   no_permission: Insufficient permission!
   unknown_command: "Unknown command, enter {0} to see help"
   set_interval: "Timer trigger interval has been set to §6{0}§r minutes"
-  reset_timer: Timer reseted
+  reset_timer: Timer resetted
   on_unload: Plugin unloaded, stopping the clock
   on_remove: Plugin removed, stopping the clock
   get_next_backup_message: "Time for the next auto backup: §3{0}§r"
-  on_backup_created: New backup detected, timer reseted
+  on_backup_created: New backup detected, timer resetted
 
   set_enabled:
     timer: "Timer has been {0}"
@@ -26,3 +26,9 @@ timed_quick_backup_multi:
   run:
     trigger_time: "Timed backup trigger every §6{0}§r minutes"
     timed_backup: "{0} Scheduled Backup"
+
+  status:
+    config_enabled: 'Enable: {0}'
+    clock_enabled: 'Clock enable: {0}'
+    clock_interval: 'Clock interval: {0}min'
+    has_online_player: 'Has online player: {0}'
