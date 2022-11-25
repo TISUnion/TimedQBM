@@ -26,3 +26,9 @@ timed_quick_backup_multi:
   run:
     trigger_time: "Timed backup trigger every §6{0}§r minutes"
     timed_backup: "{0} Scheduled Backup"
+
+  status:
+    config_enabled: 'Enable: {0}'
+    clock_enabled: 'Clock enable: {0}'
+    clock_interval: 'Clock interval: {0}min'
+    has_online_player: 'Has online player: {0}'

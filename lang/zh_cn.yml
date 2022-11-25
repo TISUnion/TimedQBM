@@ -26,3 +26,9 @@ timed_quick_backup_multi:
   run:
     trigger_time: "每§6{0}§r分钟一次的定时备份触发"
     timed_backup: "{0} 定时备份"
+
+  status:
+    config_enabled: '插件启用: {0}'
+    clock_enabled: '时钟启用: {0}'
+    clock_interval: '时钟间隔: {0}min'
+    has_online_player: '存在在线玩家: {0}'
