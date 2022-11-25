@@ -18,10 +18,18 @@ config: Config
 CONFIG_FILE = os.path.join('config', 'timed_quick_backup_multi.json')
 clock = None  # type: Optional[TimedQBM]
 playercount = 0
+flag_countright = False
 
 
 def save_config():
 	stored.server.save_config_simple(config, CONFIG_FILE, in_data_folder=False)
+
+def online_player_check(count): #is the playercount right?(correct playercount and someone is online?)
+	global flag_countright
+	if (flag_countright) and (count > 1):
+		return True
+	else:
+		return False
 
 
 # ------------------
@@ -87,7 +95,7 @@ def on_load(server: PluginServerInterface, prev):
 	except (AttributeError, ValueError):
 		pass
 
-	if (playercount != None) and (playercount > 0):
+	if (playercount != None) and (online_player_check(playercount)):
 		clock.set_enabled(config.enabled)
 	else:
 		clock.set_enabled(False)
@@ -99,7 +107,8 @@ def on_load(server: PluginServerInterface, prev):
 def on_server_start(server: PluginServerInterface):
 	#disable backup if online player is required until someone joins the server
 	#putting logic here to avoid unintended behavior from reload/load plugin after server started
-	global config, clock
+	global config, clock, flag_countright
+	flag_countright = True #yeah we are loaded before minecraft server, thus playercount is right!
 	if config.require_online_players:
 		clock.set_enabled(False)
 	else:
@@ -111,7 +120,7 @@ def on_player_joined(server: PluginServerInterface, player: str, info: Info):
 
 	if config.require_online_players:
 		global playercount, clock
-		if playercount == 0:
+		if online_player_check(playercount):
 			playercount += 1
 			clock.set_enabled(config.enabled)
 		else:
@@ -124,7 +133,7 @@ def on_player_left(server: PluginServerInterface, player: str, info: Info):
 	if config.require_online_players:
 		global playercount, clock
 		playercount -= 1
-		if playercount == 0:
+		if not online_player_check(playercount):
 			clock.set_enabled(False)
 
 
