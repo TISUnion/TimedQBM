@@ -25,13 +25,15 @@ The configuration file is ``config/timed_quick_backup_multi.json``
 {
   "enabled": true,
   "interval": 30.0,
-  "permission_requirement": 2
+  "permission_requirement": 2,
+  "require_online_players": false
 }
 ```
 
 - `enable`: TQBM backup timer master switch
 - `interval`: The interval of the TQBM backup timer in minutes
 - `permission_requirement`: Use the `! !tqb` directive's minimum permission requirement
+- `require_online_players`: When set to true, TQBM will be enabled only when there's player in the server. It requires TQBM to be loaded when the server starts, otherwise TQBM will not work
 
 ## Commands
 
@@ -40,3 +42,4 @@ The configuration file is ``config/timed_quick_backup_multi.json``
 - `!!tqb disable`: Disable the TQBM backup timer
 - `!!tqb set_interval <minutes>`: Set the TQBM backup timer interval in minutes
 - `!!tqb reset_timer`: Reset the TQBM backup timer
+- `!!tqb status`: Show the status of TQBM

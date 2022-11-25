@@ -25,13 +25,15 @@ Timed QuickBackupM
 {
   "enabled": true,
   "interval": 30.0,
-  "permission_requirement": 2
+  "permission_requirement": 2,
+  "require_online_players": false
 }
 ```
 
 - `enable`: TQBM 备份定时器总开关
 - `interval`: TQBM 备份定时器的间隔，单位为分钟
 - `permission_requirement`: 使用 `!!tqb` 指令的最小权限需求
+- `require_online_players`: 当设为 true 时，TQBM 仅在服务器中存在玩家时启用。这需要 TQBM 在服务端启动的时候处于已加载状态，否则 TQBM 将会停止工作
 
 ## 指令
 
@@ -40,3 +42,4 @@ Timed QuickBackupM
 - `!!tqb disable`: 关闭 TQBM 备份定时器
 - `!!tqb set_interval <minutes>`: 设置 TQBM 备份定时器时间间隔，单位分钟
 - `!!tqb reset_timer`: 重置 TQBM 备份定时器
+- `!!tqb status`: 查看 TQBM 状态
