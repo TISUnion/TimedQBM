@@ -16,6 +16,8 @@ class TimedQBM(Thread):
 		self.stop_event = Event()
 		self.is_enabled = False
 
+		self.is_backup_triggered = False
+
 	@staticmethod
 	def __get_interval() -> float:
 		from timed_quick_backup_multi.entry import config
@@ -53,6 +55,7 @@ class TimedQBM(Thread):
 		self.broadcast(self.tr('on_backup_created'))
 		self.reset_timer()
 		self.broadcast_next_backup_time()
+		self.is_backup_triggered = True
 
 	def run(self):
 		while True:  # loop until stop
@@ -63,7 +66,20 @@ class TimedQBM(Thread):
 					break
 			if self.is_enabled and self.server.is_server_startup():
 				self.broadcast(self.tr('run.trigger_time', self.__get_interval()))
+				self.is_backup_triggered = False
 				self.server.dispatch_event(constants.TRIGGER_BACKUP_EVENT, (self.server.get_plugin_command_source(), str(self.tr('run.timed_backup', stored.metadata.name))), on_executor_thread=False)
+
+				# wait until the task executor completes
+				# because the BACKUP_DONE_EVENT event is dispatched async
+				event = Event()
+				self.server.schedule_task(event.set)
+				event.wait(timeout=60)
+				if self.is_backup_triggered:
+					self.broadcast(self.tr('on_backup_succeed'))
+				else:
+					self.broadcast(self.tr('on_backup_failed'))
+					self.reset_timer()
+					self.broadcast_next_backup_time()
 
 	def stop(self):
 		self.stop_event.set()

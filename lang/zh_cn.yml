@@ -17,6 +17,8 @@ timed_quick_backup_multi:
   on_remove: 插件被移除，停止时钟
   get_next_backup_message: "下次自动备份时间: §3{0}§r"
   on_backup_created: 检测到新增的备份，重置定时器
+  on_backup_succeed: 定时备份成功
+  on_backup_failed: 定时备份失败，可能发生了某些错误
 
   set_enabled:
     timer: "定时器已{0}"

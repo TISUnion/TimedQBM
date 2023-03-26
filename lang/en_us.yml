@@ -16,7 +16,9 @@ timed_quick_backup_multi:
   on_unload: Plugin unloaded, stopping the clock
   on_remove: Plugin removed, stopping the clock
   get_next_backup_message: "Time for the next auto backup: §3{0}§r"
-  on_backup_created: New backup detected, timer resetted
+  on_backup_created: New backup detected, timer reset
+  on_backup_succeed: Timed backup succeeded
+  on_backup_failed: Timed backup failed, something might have gone wrong
 
   set_enabled:
     timer: "Timer has been {0}"
